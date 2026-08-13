@@ -265,6 +265,8 @@ st.markdown(
     .question-number{font-family:'DM Mono',monospace;color:var(--orange);font-size:.7rem;padding-top:.1rem;}
     .question-title{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.02rem;line-height:1.18;color:var(--ink);}
     .question-type{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.05em;color:var(--muted);margin-top:.35rem;}
+    .setup-rationale{max-width:790px;margin:.2rem 0 1.2rem;padding-left:1rem;border-left:3px solid var(--orange);font-size:.94rem;line-height:1.65;color:var(--muted);}
+    .setup-rationale strong{color:var(--ink);font-weight:600;}
     .orange-mark{background:var(--orange);color:var(--ink);padding:0 .12em;}
     .giant-number{font-family:'Playfair Display','Songti TC','STSong',serif;color:var(--ink);font-size:clamp(5rem,11vw,11rem);line-height:.82;letter-spacing:-.035em;margin:.15rem 0 .5rem;}
     .rule{height:1px;background:var(--line);margin:1.65rem 0 1rem;}
@@ -385,6 +387,12 @@ st.markdown(
     "<div><div class='figure-label'>完成時間</div><strong>3–5 分鐘</strong></div>"
     "<div><div class='figure-label'>回覆窗口</div><strong>06–09 AUG 2026</strong></div>"
     "</div>",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    "<p class='setup-rationale'><strong>這六題把會員意見轉成年度規劃依據。</strong>"
+    "先找出最需要的發展方向與資源形式，再回看既有活動的共鳴與滿意度；"
+    "最後確認下一輪計劃的優先次序，以及會員願意承擔的角色，讓工作計劃同時回應需求、改善體驗並配對執行人手。</p>",
     unsafe_allow_html=True,
 )
 questions = [
