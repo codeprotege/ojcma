@@ -1,11 +1,16 @@
 # OJC Member Pulse
 
-Static Vercel deployment of the 2026 OJC member-interest report.
+Streamlit dashboard for the 2026 OJC member-interest survey.
+
+## Run locally
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
 ## Deploy
 
-1. Upload the contents of this folder to a Vercel project, or set this folder as the project's Root Directory.
-2. Select `Other` as the framework preset.
-3. Deploy. No environment variables or build dependencies are required.
+Deploy `app.py` from this repository using Streamlit Community Cloud, Railway, or Render.
 
-The survey snapshot is stored in `data/survey.json`. Replace it with a refreshed export in the same shape to update the report.
+The dashboard reads `data/無標題的表格 (回應).xlsx`. Keep this repository private if the survey data includes personal information.
