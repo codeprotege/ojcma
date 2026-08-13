@@ -390,7 +390,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    "<p class='setup-rationale'><strong>這六題把會員意見轉成年度規劃依據。</strong>"
+    "<p class='setup-rationale'><strong>了解會員現在所想，以及他們對未來浩洋的期望。</strong>"
     "先找出最需要的發展方向與資源形式，再回看既有活動的共鳴與滿意度；"
     "最後確認下一輪計劃的優先次序，以及會員願意承擔的角色，讓工作計劃同時回應需求、改善體驗並配對執行人手。</p>",
     unsafe_allow_html=True,
