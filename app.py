@@ -216,12 +216,11 @@ def html_comment_cloud(frame: pd.DataFrame) -> str:
     if not frequencies:
         return "<div class='comment-cloud comment-cloud-empty'>沒有符合篩選條件的開放回覆</div>"
 
-    maximum = max(count for _, count in frequencies)
     words = []
-    for index, (term, count) in enumerate(sorted(frequencies, key=lambda item: (-item[1], item[0]))):
-        scale = 1.0 + 1.55 * (count / maximum)
+    for index, (term, count) in enumerate(frequencies):
         words.append(
-            f"<span class='cloud-word cloud-tone-{index % 4}' style='--cloud-size:{scale:.2f}'>{escape(term)}</span>"
+            f"<span class='cloud-word cloud-slot-{index} cloud-tone-{index % 4}' "
+            f"style='--cloud-weight:{count}' title='{count} 則回覆'>{escape(term)}</span>"
         )
     return f"<div class='comment-cloud' role='img' aria-label='以文字雲呈現所需資源或活動形式的關鍵詞'>{''.join(words)}</div>"
 
@@ -298,9 +297,11 @@ st.markdown(
     .role-symbol{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.35rem;color:var(--orange);text-align:center;}
     .role-symbol-label{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;line-height:1.1;}
     .role-symbol-row strong{font-family:'DM Mono',monospace;text-align:right;font-size:.75rem;}
-    .comment-cloud{min-height:208px;background:var(--navy);border:1px solid var(--navy);padding:1.3rem 1.15rem;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:.45rem .7rem;}
-    .cloud-word{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:calc(.9rem * var(--cloud-size));line-height:1.02;letter-spacing:0;white-space:nowrap;padding:.13rem .22rem;}
+    .comment-cloud{min-height:360px;position:relative;overflow:hidden;background:var(--navy);border:1px solid var(--navy);isolation:isolate;}
+    .cloud-word{position:absolute;display:block;font-family:'Playfair Display','Songti TC','STSong',serif;font-size:calc(.72rem + (var(--cloud-weight) * .52rem));font-weight:600;line-height:1.02;letter-spacing:0;white-space:nowrap;padding:.12rem .18rem;transform:translate(-50%,-50%) rotate(var(--cloud-tilt,0deg));transition:transform .28s ease-out,filter .28s ease-out;}
+    .cloud-word:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.08);filter:brightness(1.12);z-index:1;}
     .cloud-tone-0{color:#ff6e3b;}.cloud-tone-1{color:#f7f4ea;}.cloud-tone-2{color:#b8d3c7;}.cloud-tone-3{color:#e7c26a;}
+    .cloud-slot-0{left:50%;top:51%;--cloud-tilt:-2deg;}.cloud-slot-1{left:53%;top:25%;--cloud-tilt:1deg;}.cloud-slot-2{left:25%;top:55%;--cloud-tilt:-4deg;}.cloud-slot-3{left:75%;top:53%;--cloud-tilt:3deg;}.cloud-slot-4{left:74%;top:34%;--cloud-tilt:-2deg;}.cloud-slot-5{left:27%;top:30%;--cloud-tilt:2deg;}.cloud-slot-6{left:71%;top:76%;--cloud-tilt:-3deg;}.cloud-slot-7{left:27%;top:77%;--cloud-tilt:2deg;}.cloud-slot-8{left:14%;top:43%;--cloud-tilt:-5deg;}.cloud-slot-9{left:86%;top:65%;--cloud-tilt:3deg;}.cloud-slot-10{left:48%;top:75%;--cloud-tilt:-1deg;}.cloud-slot-11{left:49%;top:89%;--cloud-tilt:2deg;}
     .comment-cloud-empty{font-family:'DM Mono',monospace;font-size:.72rem;color:#aeb4be;}
     .decision-line{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:46px 1fr 1.2fr;gap:.8rem;align-items:start;}
     .decision-line b{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--orange);}
@@ -333,7 +334,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.comment-cloud{min-height:175px;padding:.9rem .65rem;gap:.33rem .45rem;}.cloud-word{font-size:calc(.8rem * var(--cloud-size));}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
