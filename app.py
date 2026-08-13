@@ -297,6 +297,14 @@ st.markdown(
     .role-symbol{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.35rem;color:var(--orange);text-align:center;}
     .role-symbol-label{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;line-height:1.1;}
     .role-symbol-row strong{font-family:'DM Mono',monospace;text-align:right;font-size:.75rem;}
+    .member-figure-row{display:grid;grid-template-columns:minmax(170px,1fr) minmax(150px,2.5fr) 34px;gap:.7rem;align-items:center;min-height:54px;border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent);}
+    .member-figure-row:last-child{border-bottom:0;}
+    .member-figure-label{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.02rem;line-height:1.12;}
+    .member-figures{display:flex;flex-wrap:wrap;gap:5px 7px;align-items:center;}
+    .member-figure{width:13px;height:20px;position:relative;display:inline-block;color:var(--orange);flex:0 0 13px;}
+    .member-figure::before{content:'';position:absolute;top:0;left:4px;width:6px;height:6px;border-radius:50%;background:currentColor;}
+    .member-figure::after{content:'';position:absolute;top:7px;left:2px;width:10px;height:12px;background:currentColor;clip-path:polygon(30% 0,70% 0,83% 27%,100% 42%,87% 53%,76% 39%,76% 100%,59% 100%,50% 70%,41% 100%,24% 100%,24% 39%,13% 53%,0 42%,17% 27%);}
+    .member-figure-value{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right;}
     .comment-cloud{min-height:360px;position:relative;overflow:hidden;background:var(--navy);border:1px solid var(--navy);isolation:isolate;}
     .cloud-word{position:absolute;display:block;font-family:'Playfair Display','Songti TC','STSong',serif;font-size:calc(.72rem + (var(--cloud-weight) * .52rem));font-weight:600;line-height:1.02;letter-spacing:0;white-space:nowrap;padding:.12rem .18rem;transform:translate(-50%,-50%) rotate(var(--cloud-tilt,0deg));transition:transform .28s ease-out,filter .28s ease-out;}
     .cloud-word:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.08);filter:brightness(1.12);z-index:1;}
@@ -334,7 +342,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -410,11 +418,13 @@ st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 02C · 已有共鳴的形式</div>", unsafe_allow_html=True)
 existing = filtered[filtered["memorable_programmes"].notna()]
 existing_data = pd.DataFrame({"活動": list(PROGRAMMES.values()), "提及": [count_choice(existing, "memorable_programmes", key) for key in PROGRAMMES]}).sort_values("提及", ascending=False)
-existing_dots = "".join(
-    f"<div class='role-symbol-row'><span class='role-symbol'>{'●' * int(row['提及'])}</span><span class='role-symbol-label'>{escape(str(row['活動']))}</span><strong>{int(row['提及'])}</strong></div>"
+existing_members = "".join(
+    f"<div class='member-figure-row'><span class='member-figure-label'>{escape(str(row['活動']))}</span>"
+    f"<span class='member-figures' aria-hidden='true'>{''.join('<i class="member-figure"></i>' for _ in range(int(row['提及'])))}</span>"
+    f"<strong class='member-figure-value'>{int(row['提及'])}</strong></div>"
     for _, row in existing_data.iterrows()
 )
-st.markdown(f"<div class='role-symbol-chart' role='img' aria-label='以圓點呈現既有活動提及次數'>{existing_dots}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='role-symbol-chart' role='img' aria-label='以人形符號呈現提及既有活動的會員人數'>{existing_members}</div>", unsafe_allow_html=True)
 
 st.markdown("<div id='comments'></div><div class='section'><div class='figure-label'>FIG 02D · 開放意見</div><h2>會員想要的資源，<br>藏在他們的用字裡。</h2></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 02D · 所需資源或活動形式 / 關鍵詞</div>", unsafe_allow_html=True)
