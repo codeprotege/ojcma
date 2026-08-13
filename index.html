@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050d1b" />
+    <title>浩洋會員興趣調查｜2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="rail">
+      <div class="rail-content">
+        <p class="rail-kicker">浩洋會員興趣調查 / 2026</p>
+        <nav class="rail-nav" aria-label="頁面章節">
+          <a href="#opening">01 / 開場</a>
+          <a href="#setup">02 / 問卷設定</a>
+          <a href="#signal">03 / 會員訊號</a>
+          <a href="#portfolio">04 / 計劃組合</a>
+          <a href="#trace">05 / 策略追溯</a>
+        </nav>
+        <div class="filter-panel">
+          <label for="satisfaction">活動滿意度</label>
+          <select id="satisfaction">
+            <option value="全部">全部</option>
+            <option>非常滿意</option>
+            <option>滿意</option>
+            <option>一般</option>
+            <option>有改進空間</option>
+            <option>未曾參與今年活動</option>
+          </select>
+          <label for="focus">主要發展方向</label>
+          <select id="focus">
+            <option value="全部">全部</option>
+            <option>個人發展</option>
+            <option>社會發展</option>
+            <option>商務發展</option>
+            <option>國際發展</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <section id="opening" class="hero">
+        <p class="orange-kicker">MEMBER PULSE / OCEAN JUNIOR CHAMBER</p>
+        <h1>會員想成長，<br />也想連結。</h1>
+      </section>
+
+      <div class="figure-head">FIG 01 · 2026 浩洋會員興趣調查 / 回覆窗口 06–09 AUG</div>
+      <section class="quote">
+        <p class="figure-label">FIG 01A · 首選訊號</p>
+        <p id="top-signal" class="signal-text"></p>
+      </section>
+
+      <section id="setup" class="section">
+        <p class="figure-label">FIG 01B · 問卷設定</p>
+        <h2>問卷從六個面向，<br />收集會員下一步的選擇。</h2>
+        <div class="setup-meta">
+          <div><span>問卷名稱</span><strong>浩洋會員興趣調查</strong></div>
+          <div><span>完成時間</span><strong>3–5 分鐘</strong></div>
+          <div><span>回覆窗口</span><strong>06–09 AUG 2026</strong></div>
+        </div>
+        <div class="questionnaire-grid">
+          <article><b>01</b><div><strong>四大發展機會</strong><small>單選 · 個人／社會／國際／商務</small></div></article>
+          <article><b>02</b><div><strong>所需資源或活動形式</strong><small>開放回覆</small></div></article>
+          <article><b>03</b><div><strong>今年最有印象的工作計劃</strong><small>多選 · 三項既有活動</small></div></article>
+          <article><b>04</b><div><strong>今年活動整體滿意度</strong><small>單選 · 五級評價／未曾參與</small></div></article>
+          <article><b>05</b><div><strong>最希望的新工作計劃</strong><small>多選 · 六項發展提案＋其他</small></div></article>
+          <article><b>06</b><div><strong>未來希望承擔的角色</strong><small>單選 · 主席／OC／董事局／支持／彈性</small></div></article>
+        </div>
+      </section>
+
+      <section id="signal" class="section">
+        <p class="figure-label">FIG 02 · 需求分布</p>
+        <h2>會員要的不是更多活動，<br />而是更有用的活動。</h2>
+        <div class="two-up">
+          <figure>
+            <figcaption>FIG 02A · JCI 四大發展機會 / 首選</figcaption>
+            <div id="focus-chart" class="chart" role="img" aria-label="四大發展機會首選"></div>
+          </figure>
+          <div class="metric-panel">
+            <p class="figure-label">正面滿意度</p>
+            <div id="positive-rate" class="giant-number">0%</div>
+            <figcaption>FIG 02B · 活動整體滿意度</figcaption>
+            <div id="satisfaction-chart" class="chart" role="img" aria-label="活動整體滿意度"></div>
+          </div>
+        </div>
+        <figure>
+          <figcaption>FIG 02C · 已有共鳴的形式</figcaption>
+          <div id="memory-chart" class="chart" role="img" aria-label="既有活動提及"></div>
+        </figure>
+      </section>
+
+      <section class="media-figure">
+        <img src="assets/jci-collab.jpg" alt="團隊正在討論與合作" />
+        <span>FIG 03 · 會員參與</span>
+      </section>
+      <section class="visual-spread">
+        <div class="portrait"></div>
+        <div class="field-note"><p>FIELD NOTE · 會員參與</p><strong>一起完成。</strong><div class="index-lines"><i></i><i></i><i></i><i></i></div></div>
+      </section>
+
+      <section id="portfolio" class="section">
+        <p class="figure-label">FIG 04 · 計劃組合</p>
+        <h2>六個選項，<br />四個先後順序。</h2>
+        <div class="two-up portfolio-grid">
+          <figure>
+            <figcaption>FIG 04A · 新工作計劃 / 多選</figcaption>
+            <div id="programme-chart" class="chart" role="img" aria-label="新工作計劃需求"></div>
+          </figure>
+          <div class="decisions">
+            <p class="figure-label">建議的年度節奏</p>
+            <div><b>01<br /><small>首季主打</small></b><strong>AI 與數位工具</strong></div>
+            <div><b>02<br /><small>首季主打</small></b><strong>姊妹會交流</strong></div>
+            <div><b>03<br /><small>第二波</small></b><strong>綠色永續／ESG</strong></div>
+            <div><b>04<br /><small>第二波</small></b><strong>青年精神健康</strong></div>
+          </div>
+        </div>
+        <figure>
+          <figcaption>FIG 04B · 參與設計</figcaption>
+          <div id="role-chart" class="symbol-chart" role="img" aria-label="未來角色回覆"></div>
+        </figure>
+      </section>
+
+      <section id="trace" class="section">
+        <p class="figure-label">FIG 05 · 策略追溯</p>
+        <h2>計劃要能說清楚：<br />為甚麼是現在，為甚麼由 OJC 做。</h2>
+        <figure>
+          <figcaption>FIG 05A · JCI 2023–2027 四項策略</figcaption>
+          <div id="strategy-matrix" class="matrix" role="table" aria-label="JCI 策略對照"></div>
+        </figure>
+        <figure>
+          <figcaption>FIG 05B · UNSDG 對照</figcaption>
+          <div id="sdg-list" class="sdg-list"></div>
+        </figure>
+        <div class="two-up payment-grid">
+          <figure>
+            <figcaption>FIG 05C · 會員參與環境</figcaption>
+            <div id="membership-chart" class="chart" role="img" aria-label="會員繳費快照"></div>
+          </figure>
+          <div class="quote compact"><p class="figure-label">FIG 05C · 會員快照</p><p>繳費比例</p></div>
+        </div>
+      </section>
+
+      <footer>資料來源：data/無標題的表格 (回應).xlsx 及 PDF 匯出檔；繳費快照摘錄自 data/ 內 WhatsApp 圖像。JCI 對照參考 2023–2027 Strategic Plan；UNSDG 對照為規劃性映射。</footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
