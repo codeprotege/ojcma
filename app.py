@@ -92,6 +92,23 @@ ALIGN = {
 }
 MEMBERSHIP = pd.DataFrame({"組別": ["正式會員", "總會資深商會會員", "浩洋資深青商會員"], "已繳費": [25, 19, 17], "總數": [25, 22, 27]})
 MEMBERSHIP["比例"] = MEMBERSHIP["已繳費"] / MEMBERSHIP["總數"]
+COMMENT_TERMS = {
+    "活動": ("活動",),
+    "國際": ("國際",),
+    "朋友": ("朋友",),
+    "培訓": ("training", "培訓", "演練"),
+    "交流": ("交流",),
+    "工作坊": ("工作坊",),
+    "合作": ("partnership", "合作"),
+    "資源": ("資源",),
+    "講座": ("講座",),
+    "體驗": ("體驗",),
+    "分享會": ("分享會",),
+    "司儀": ("司儀",),
+    "簡報": ("簡報",),
+    "興趣": ("興趣",),
+    "資深會友": ("資深會友",),
+}
 
 def count_choice(frame: pd.DataFrame, column: str, key: str) -> int:
     return int(frame[column].fillna("").astype(str).str.contains(key, regex=False).sum())
@@ -190,6 +207,28 @@ def html_symbol_roles(data: pd.DataFrame) -> str:
     return f"<div class='role-symbol-chart' role='img' aria-label='以符號呈現未來角色回覆'>{''.join(rows)}</div>"
 
 
+def html_comment_cloud(frame: pd.DataFrame) -> str:
+    responses = frame["resource_request"].dropna().astype(str).str.strip()
+    responses = responses[responses.ne("")]
+    frequencies = []
+    for term, needles in COMMENT_TERMS.items():
+        count = sum(any(needle in response.lower() for needle in needles) for response in responses)
+        if count:
+            frequencies.append((term, count))
+
+    if not frequencies:
+        return "<div class='comment-cloud comment-cloud-empty'>沒有符合篩選條件的開放回覆</div>"
+
+    maximum = max(count for _, count in frequencies)
+    words = []
+    for index, (term, count) in enumerate(sorted(frequencies, key=lambda item: (-item[1], item[0]))):
+        scale = 1.0 + 1.55 * (count / maximum)
+        words.append(
+            f"<span class='cloud-word cloud-tone-{index % 4}' style='--cloud-size:{scale:.2f}'>{escape(term)}</span>"
+        )
+    return f"<div class='comment-cloud' role='img' aria-label='以文字雲呈現所需資源或活動形式的關鍵詞'>{''.join(words)}</div>"
+
+
 def image_url(path: Path) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(path.read_bytes()).decode("ascii")
 
@@ -262,6 +301,10 @@ st.markdown(
     .role-symbol{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.35rem;color:var(--orange);text-align:center;}
     .role-symbol-label{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;line-height:1.1;}
     .role-symbol-row strong{font-family:'DM Mono',monospace;text-align:right;font-size:.75rem;}
+    .comment-cloud{min-height:208px;background:var(--navy);border:1px solid var(--navy);padding:1.3rem 1.15rem;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:.45rem .7rem;}
+    .cloud-word{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:calc(.9rem * var(--cloud-size));line-height:1.02;letter-spacing:0;white-space:nowrap;padding:.13rem .22rem;}
+    .cloud-tone-0{color:#ff6e3b;}.cloud-tone-1{color:#f7f4ea;}.cloud-tone-2{color:#b8d3c7;}.cloud-tone-3{color:#e7c26a;}
+    .comment-cloud-empty{font-family:'DM Mono',monospace;font-size:.72rem;color:#aeb4be;}
     .decision-line{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:46px 1fr 1.2fr;gap:.8rem;align-items:start;}
     .decision-line b{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--orange);}
     .decision-line strong{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.15rem;line-height:1.1;}
@@ -293,14 +336,14 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.comment-cloud{min-height:175px;padding:.9rem .65rem;gap:.33rem .45rem;}.cloud-word{font-size:calc(.8rem * var(--cloud-size));}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
 st.sidebar.markdown("<div class='rail-kicker'>浩洋會員興趣調查 / 2026</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<nav class='rail-nav'><a href='#opening'>01 / 開場</a><a href='#signal'>02 / 會員訊號</a><a href='#portfolio'>03 / 計劃組合</a><a href='#trace'>04 / 策略追溯</a></nav>", unsafe_allow_html=True)
+st.sidebar.markdown("<nav class='rail-nav'><a href='#opening'>01 / 開場</a><a href='#signal'>02 / 會員訊號</a><a href='#comments'>03 / 開放意見</a><a href='#portfolio'>04 / 計劃組合</a><a href='#trace'>05 / 策略追溯</a></nav>", unsafe_allow_html=True)
 st.sidebar.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 satisfaction_filter = st.sidebar.selectbox("活動滿意度", ["全部"] + SATISFACTION)
 focus_filter = st.sidebar.selectbox("主要發展方向", ["全部"] + FOCUS)
@@ -374,6 +417,10 @@ existing_dots = "".join(
     for _, row in existing_data.iterrows()
 )
 st.markdown(f"<div class='role-symbol-chart' role='img' aria-label='以圓點呈現既有活動提及次數'>{existing_dots}</div>", unsafe_allow_html=True)
+
+st.markdown("<div id='comments'></div><div class='section'><div class='figure-label'>FIG 02D · 開放意見</div><h2>會員想要的資源，<br>藏在他們的用字裡。</h2></div>", unsafe_allow_html=True)
+st.markdown("<div class='figure-head'>FIG 02D · 所需資源或活動形式 / 關鍵詞</div>", unsafe_allow_html=True)
+st.markdown(html_comment_cloud(filtered), unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div><div class='image-figure'><img src='" + image + "'><div class='image-overlay'><small>FIG 03 · 會員參與</small></div></div>", unsafe_allow_html=True)
 
