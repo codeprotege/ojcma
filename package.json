@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "vercel dev",
-    "build": "node -e \"console.log('Static site: no build step required.')\""
+    "build": "node build.mjs"
   }
 }
