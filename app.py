@@ -97,6 +97,11 @@ ALIGN = {
     "初創創業": ([2, 2, 1, 1], "品牌可見度、領導力發展", ["SDG 8", "SDG 9", "SDG 17"]),
     "體育聯賽": ([0, 1, 2, 0], "組織可持續", ["SDG 3", "SDG 10"]),
 }
+THIS_YEAR_ALIGN = {
+    "幼教生存劇本殺": ("幼教生存劇本殺", "領導力發展", ["SDG 4", "SDG 8"]),
+    "港日交流塾": ("港日交流塾（日語基礎班）", "品牌可見度、領導力發展", ["SDG 4", "SDG 17"]),
+    "項目管理爆SKILL": ("從 I 到 TEAM：項目管理爆SKILL 營", "領導力發展、組織可持續", ["SDG 4", "SDG 8"]),
+}
 MEMBERSHIP = pd.DataFrame({"組別": ["正式會員", "總會資深商會會員", "浩洋資深青商會員"], "已繳費": [25, 19, 17], "總數": [25, 22, 27]})
 MEMBERSHIP["比例"] = MEMBERSHIP["已繳費"] / MEMBERSHIP["總數"]
 COMMENT_TERMS = {
@@ -431,6 +436,7 @@ st.markdown(
     .sdg-logo{display:block;width:100%;aspect-ratio:1;object-fit:cover;}
     .mapping-sdgs{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
     .mapping-sdgs .sdg-logo{width:40px;flex:0 0 40px;}
+    .mapping-group-label{border-top:1px solid var(--line);margin-top:.6rem;padding:.6rem 0 .15rem;font-family:'DM Mono',monospace;font-size:.63rem;color:var(--orange);letter-spacing:.07em;text-transform:uppercase;}
     .mapping{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:1.1fr .5fr 1.2fr 1.25fr;gap:.8rem;align-items:center;}
     .mapping-name{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;}
     .mapping-demand{color:var(--orange);font-family:'DM Mono',monospace;font-size:.78rem;}
@@ -585,6 +591,12 @@ st.markdown(html_strategy_matrix(), unsafe_allow_html=True)
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 05B · UNSDG 對照</div>", unsafe_allow_html=True)
 st.markdown(html_sdg_logo_grid(), unsafe_allow_html=True)
+st.markdown("<div class='mapping-group-label'>本年度項目</div>", unsafe_allow_html=True)
+for key, (label, strategy, sdgs) in THIS_YEAR_ALIGN.items():
+    count = count_choice(filtered, "memorable_programmes", key)
+    sdg_icons = "".join(sdg_logo(int(tag.split()[-1])) for tag in sdgs)
+    st.markdown(f"<div class='mapping'><div class='mapping-name'>{label}</div><div class='mapping-demand'>提及 {count}</div><div class='mapping-copy'><b>JCI 策略</b><br>{strategy}</div><div class='mapping-sdgs'>{sdg_icons}</div></div>", unsafe_allow_html=True)
+st.markdown("<div class='mapping-group-label'>會員期望的新工作計劃</div>", unsafe_allow_html=True)
 for key, label in NEW_PROGRAMMES.items():
     count = count_choice(filtered, "new_programmes", key)
     sdg_icons = "".join(sdg_logo(int(tag.split()[-1])) for tag in ALIGN[key][2])
