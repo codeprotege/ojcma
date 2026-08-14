@@ -225,6 +225,28 @@ def html_comment_cloud(frame: pd.DataFrame) -> str:
     return f"<div class='comment-cloud' role='img' aria-label='以文字雲呈現所需資源或活動形式的關鍵詞'>{''.join(words)}</div>"
 
 
+def html_payment_grid(data: pd.DataFrame) -> str:
+    rows = []
+    for _, row in data.iterrows():
+        paid = int(row["已繳費"])
+        total = int(row["總數"])
+        unpaid = total - paid
+        cells = "".join("<i class='payment-cell is-paid'></i>" for _ in range(paid))
+        cells += "".join("<i class='payment-cell is-unpaid'></i>" for _ in range(unpaid))
+        rows.append(
+            f"<div class='payment-grid-row' aria-label='{escape(str(row['組別']))}：已繳 {paid} 位，未繳 {unpaid} 位，共 {total} 位'>"
+            f"<div class='payment-grid-label'>{escape(str(row['組別']))}</div>"
+            f"<div class='payment-member-grid' aria-hidden='true'>{cells}</div>"
+            f"<div class='payment-grid-value'>{paid}/{total}</div></div>"
+        )
+    return (
+        "<div class='payment-grid-chart' role='img' aria-label='各類別會員繳費記錄'>"
+        f"{''.join(rows)}"
+        "<div class='payment-grid-key'><span><i class='payment-cell is-paid'></i>已繳</span>"
+        "<span><i class='payment-cell is-unpaid'></i>未繳</span></div></div>"
+    )
+
+
 def image_url(path: Path) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(path.read_bytes()).decode("ascii")
 
@@ -307,6 +329,17 @@ st.markdown(
     .member-figure::before{content:'';position:absolute;top:0;left:4px;width:6px;height:6px;border-radius:50%;background:currentColor;}
     .member-figure::after{content:'';position:absolute;top:7px;left:2px;width:10px;height:12px;background:currentColor;clip-path:polygon(30% 0,70% 0,83% 27%,100% 42%,87% 53%,76% 39%,76% 100%,59% 100%,50% 70%,41% 100%,24% 100%,24% 39%,13% 53%,0 42%,17% 27%);}
     .member-figure-value{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right;}
+    .payment-grid-chart{background:var(--pale);border:1px solid var(--line);padding:.75rem 1rem;}
+    .payment-grid-row{display:grid;grid-template-columns:minmax(156px,1fr) minmax(158px,1.8fr) 52px;gap:.85rem;align-items:center;min-height:62px;border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent);}
+    .payment-grid-label{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.04rem;line-height:1.12;}
+    .payment-member-grid{display:grid;grid-template-columns:repeat(9,12px);grid-auto-rows:12px;gap:4px;align-content:center;}
+    .payment-cell{display:block;width:12px;height:12px;box-sizing:border-box;}
+    .payment-cell.is-paid{background:var(--orange);border:1px solid var(--orange);}
+    .payment-cell.is-unpaid{background:transparent;border:1px solid #a9aaa4;}
+    .payment-grid-value{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right;white-space:nowrap;}
+    .payment-grid-key{display:flex;gap:1rem;padding-top:.7rem;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);}
+    .payment-grid-key span{display:flex;align-items:center;gap:.35rem;}
+    .payment-grid-key .payment-cell{width:10px;height:10px;}
     .comment-cloud{min-height:360px;position:relative;overflow:hidden;background:var(--navy);border:1px solid var(--navy);isolation:isolate;}
     .cloud-word{position:absolute;display:block;font-family:'Playfair Display','Songti TC','STSong',serif;font-size:calc(.72rem + (var(--cloud-weight) * .52rem));font-weight:600;line-height:1.02;letter-spacing:0;white-space:nowrap;padding:.12rem .18rem;transform:translate(-50%,-50%) rotate(var(--cloud-tilt,0deg));transition:transform .28s ease-out,filter .28s ease-out;}
     .cloud-word:hover{transform:translate(-50%,-50%) rotate(0deg) scale(1.08);filter:brightness(1.12);z-index:1;}
@@ -344,7 +377,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -483,13 +516,8 @@ for key, label in NEW_PROGRAMMES.items():
     st.markdown(f"<div class='mapping'><div class='mapping-name'>{label}</div><div class='mapping-demand'>{count}／{total}</div><div class='mapping-copy'><b>JCI 策略</b><br>{ALIGN[key][1]}</div><div>{sdgs}</div></div>", unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
-pay_left, pay_right = st.columns([1.2, .8], gap="large")
-with pay_left:
-    st.markdown("<div class='figure-head'>FIG 05C · 會員參與環境</div>", unsafe_allow_html=True)
-    membership_chart = MEMBERSHIP.assign(繳費比例=(MEMBERSHIP["比例"] * 100).round().astype(int))
-    st.markdown(html_bar_chart(membership_chart, "組別", "繳費比例", denominator=100), unsafe_allow_html=True)
-with pay_right:
-    st.markdown("<div class='quote'><div class='figure-label'>FIG 05C · 會員快照</div><p>繳費比例</p></div>", unsafe_allow_html=True)
+st.markdown("<div class='figure-head'>FIG 05C · 各類別會員繳費記錄</div>", unsafe_allow_html=True)
+st.markdown(html_payment_grid(MEMBERSHIP), unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 st.markdown("<div class='footer-note'>資料來源：data/無標題的表格 (回應).xlsx 及 PDF 匯出檔；繳費快照摘錄自 data/ 內 WhatsApp 圖像。JCI 對照參考 2023–2027 Strategic Plan；UNSDG 對照為規劃性映射。</div>", unsafe_allow_html=True)
