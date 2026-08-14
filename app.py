@@ -324,7 +324,8 @@ st.markdown(
     .signal-board{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:clamp(1.5rem,3vw,3rem) clamp(1rem,2.8vw,3rem);margin:.35rem 0 .25rem;}
     .signal-panel{min-width:0;display:flex;flex-direction:column;}
     .signal-panel .figure-head{margin:0;flex:0 0 auto;}
-    .signal-panel .lollipop-chart,.signal-panel .scale-chart,.signal-panel .role-symbol-chart,.signal-panel .membership-pie-chart{flex:1;box-sizing:border-box;}
+    .signal-panel .lollipop-chart{flex:0 0 auto;}
+    .signal-panel .scale-chart,.signal-panel .role-symbol-chart,.signal-panel .membership-pie-chart{flex:1;box-sizing:border-box;}
     .signal-metric{min-height:146px;padding:.35rem 0 .8rem;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;}
     .signal-metric .giant-number{font-size:clamp(4.75rem,8vw,8rem);margin:.2rem 0 0;}
     .chart-frame{background:var(--pale);border:1px solid var(--line);padding:.35rem .35rem 0;}
