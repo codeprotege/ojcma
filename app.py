@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent
 DATA_FILE = ROOT / "data" / "無標題的表格 (回應).xlsx"
 IMAGE_FILE = ROOT / "assets" / "jci-collab.jpg"
 HERO_FILE = ROOT / "assets" / "jci-hero.jpg"
+SDG_ICON_DIR = ROOT / "assets" / "sdgs"
 
 st.set_page_config(
     page_title="浩洋會員興趣調查｜Editorial edition",
@@ -82,6 +83,12 @@ ROLES = {
     "視乎時間再作安排": "視乎時間安排",
 }
 PILLARS = ["品牌可見度", "領導力發展", "組織可持續", "數據驅動創新"]
+SDG_TITLES = {
+    1: "消除貧窮", 2: "消除飢餓", 3: "良好健康與福祉", 4: "優質教育", 5: "性別平等",
+    6: "淨水及衛生", 7: "可負擔的清潔能源", 8: "合適的工作及經濟成長", 9: "工業、創新和基礎建設",
+    10: "減少不平等", 11: "可持續城巿和社區", 12: "責任消費及生產", 13: "氣候行動",
+    14: "水下生物", 15: "陸地生物", 16: "和平、正義及健全制度", 17: "促進目標實現的伙伴關係",
+}
 ALIGN = {
     "AI與數位": ([0, 2, 0, 2], "領導力發展、數據驅動創新", ["SDG 4", "SDG 8", "SDG 9"]),
     "青年精神健康": ([1, 1, 2, 0], "組織可持續", ["SDG 3", "SDG 10", "SDG 11"]),
@@ -281,6 +288,19 @@ def image_url(path: Path) -> str:
 
 image = image_url(IMAGE_FILE)
 hero_image = image_url(HERO_FILE)
+SDG_IMAGES = {goal: image_url(SDG_ICON_DIR / f"goal-{goal:02d}.jpg") for goal in SDG_TITLES}
+
+
+def sdg_logo(goal: int, class_name: str = "sdg-logo") -> str:
+    return (
+        f"<img class='{class_name}' src='{SDG_IMAGES[goal]}' "
+        f"alt='SDG {goal}：{SDG_TITLES[goal]}' title='SDG {goal}：{SDG_TITLES[goal]}'>"
+    )
+
+
+def html_sdg_logo_grid() -> str:
+    logos = "".join(sdg_logo(goal) for goal in SDG_TITLES)
+    return f"<div class='sdg-logo-grid' role='list' aria-label='聯合國可持續發展目標 1 至 17'>{logos}</div>"
 
 st.markdown(
     """
@@ -403,7 +423,10 @@ st.markdown(
     .visual-note .statement{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:clamp(1.8rem,3vw,3.5rem);line-height:1.04;margin:.45rem 0 1.1rem;max-width:700px;}
     .margin-index{display:flex;gap:.45rem;margin:1rem 0 0;}
     .margin-index span{width:19px;height:3px;background:#4a5361;}.margin-index span:first-child{background:var(--orange);width:39px;}
-    .sdg{display:inline-block;background:#deded7;color:var(--ink);font-family:'DM Mono',monospace;font-size:.62rem;padding:.24rem .4rem;margin:.35rem .25rem 0 0;border:1px solid #c9c9c1;}
+    .sdg-logo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(48px,1fr));gap:6px;margin:.65rem 0 1.15rem;}
+    .sdg-logo{display:block;width:100%;aspect-ratio:1;object-fit:cover;}
+    .mapping-sdgs{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+    .mapping-sdgs .sdg-logo{width:40px;flex:0 0 40px;}
     .mapping{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:1.1fr .5fr 1.2fr 1.25fr;gap:.8rem;align-items:center;}
     .mapping-name{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;}
     .mapping-demand{color:var(--orange);font-family:'DM Mono',monospace;font-size:.78rem;}
@@ -418,7 +441,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.signal-board{grid-template-columns:1fr;gap:1.75rem;margin-top:.2rem;}.signal-metric{min-height:112px;padding:.2rem 0 .65rem;}.signal-metric .giant-number{font-size:4.5rem;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.signal-board{grid-template-columns:1fr;gap:1.75rem;margin-top:.2rem;}.signal-metric{min-height:112px;padding:.2rem 0 .65rem;}.signal-metric .giant-number{font-size:4.5rem;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.sdg-logo-grid{grid-template-columns:repeat(auto-fit,minmax(42px,1fr));gap:4px;}.mapping-sdgs .sdg-logo{width:34px;flex-basis:34px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -552,10 +575,11 @@ st.markdown(html_strategy_matrix(), unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 05B · UNSDG 對照</div>", unsafe_allow_html=True)
+st.markdown(html_sdg_logo_grid(), unsafe_allow_html=True)
 for key, label in NEW_PROGRAMMES.items():
     count = count_choice(filtered, "new_programmes", key)
-    sdgs = "".join(f"<span class='sdg'>{tag}</span>" for tag in ALIGN[key][2])
-    st.markdown(f"<div class='mapping'><div class='mapping-name'>{label}</div><div class='mapping-demand'>{count}／{total}</div><div class='mapping-copy'><b>JCI 策略</b><br>{ALIGN[key][1]}</div><div>{sdgs}</div></div>", unsafe_allow_html=True)
+    sdg_icons = "".join(sdg_logo(int(tag.split()[-1])) for tag in ALIGN[key][2])
+    st.markdown(f"<div class='mapping'><div class='mapping-name'>{label}</div><div class='mapping-demand'>{count}／{total}</div><div class='mapping-copy'><b>JCI 策略</b><br>{ALIGN[key][1]}</div><div class='mapping-sdgs'>{sdg_icons}</div></div>", unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 05C · 各類別會員繳費記錄</div>", unsafe_allow_html=True)
