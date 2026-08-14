@@ -102,6 +102,11 @@ THIS_YEAR_ALIGN = {
     "港日交流塾": ("港日交流塾（日語基礎班）", "品牌可見度、領導力發展", ["SDG 4", "SDG 17"]),
     "項目管理爆SKILL": ("從 I 到 TEAM：項目管理爆SKILL 營", "領導力發展、組織可持續", ["SDG 4", "SDG 8"]),
 }
+PROJECT_TRANSITIONS = (
+    ("幼教生存劇本殺", "AI與數位", "技能 × 數位應用", [4, 8, 9]),
+    ("港日交流塾", "姊妹會", "國際 × 深度合作", [4, 10, 17]),
+    ("項目管理爆SKILL", "綠色永續", "團隊 × ESG 實作", [12, 13, 17]),
+)
 MEMBERSHIP = pd.DataFrame({"組別": ["正式會員", "總會資深商會會員", "浩洋資深青商會員"], "已繳費": [25, 19, 17], "總數": [25, 22, 27]})
 MEMBERSHIP["比例"] = MEMBERSHIP["已繳費"] / MEMBERSHIP["總數"]
 COMMENT_TERMS = {
@@ -307,6 +312,29 @@ def html_sdg_logo_grid() -> str:
     logos = "".join(sdg_logo(goal) for goal in SDG_TITLES)
     return f"<div class='sdg-logo-grid' role='list' aria-label='聯合國可持續發展目標 1 至 17'>{logos}</div>"
 
+
+def html_project_transition_comparison(frame: pd.DataFrame) -> str:
+    rows = []
+    for current_key, next_key, member_need, expanded_sdgs in PROJECT_TRANSITIONS:
+        current_label, _, current_sdg_tags = THIS_YEAR_ALIGN[current_key]
+        current_count = count_choice(frame, "memorable_programmes", current_key)
+        next_count = count_choice(frame, "new_programmes", next_key)
+        current_icons = "".join(sdg_logo(int(tag.split()[-1])) for tag in current_sdg_tags)
+        expanded_icons = "".join(sdg_logo(goal) for goal in expanded_sdgs)
+        rows.append(
+            "<article class='transition-row'>"
+            f"<div class='transition-cell transition-current' data-label='本年度項目'><span class='transition-count'>提及 {current_count}</span><strong>{escape(current_label)}</strong><div class='transition-sdgs'>{current_icons}</div></div>"
+            f"<div class='transition-cell transition-need' data-label='會員訊號'><span>{escape(member_need)}</span><strong>{next_count} 選擇</strong></div>"
+            f"<div class='transition-cell transition-next' data-label='下一步項目'><span class='transition-arrow' aria-hidden='true'>→</span><strong>{escape(NEW_PROGRAMMES[next_key])}</strong></div>"
+            f"<div class='transition-cell transition-goals' data-label='擴展 SDG'>{expanded_icons}</div>"
+            "</article>"
+        )
+    return (
+        "<section class='transition-board' role='table' aria-label='本年度項目轉化為下一步工作計劃的比較'>"
+        "<div class='transition-head' role='row'><div>本年度項目</div><div>會員訊號</div><div>下一步項目</div><div>擴展 SDG</div></div>"
+        f"{''.join(rows)}</section>"
+    )
+
 st.markdown(
     """
     <style>
@@ -441,6 +469,17 @@ st.markdown(
     .mapping-name{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1.05rem;}
     .mapping-demand{color:var(--orange);font-family:'DM Mono',monospace;font-size:.78rem;}
     .mapping-copy{color:var(--muted);font-size:.76rem;line-height:1.4;}
+    .transition-board{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .transition-head,.transition-row{display:grid;grid-template-columns:1.15fr .72fr 1.25fr .9fr;}
+    .transition-head{background:var(--navy);color:#f7f4ea;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;}
+    .transition-head>div{padding:.52rem .7rem;border-right:1px solid #384252;}.transition-head>div:last-child{border-right:0;}
+    .transition-row{border-top:1px solid var(--line);}.transition-row:first-of-type{border-top:0;}
+    .transition-cell{min-width:0;padding:.8rem .7rem;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:.35rem;}.transition-cell:last-child{border-right:0;}
+    .transition-cell strong{font-family:'Playfair Display','Songti TC','STSong',serif;font-size:1rem;line-height:1.12;letter-spacing:0;}
+    .transition-count,.transition-need span{font-family:'DM Mono',monospace;font-size:.63rem;color:var(--muted);letter-spacing:.04em;}
+    .transition-count{color:var(--orange);}.transition-need strong{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--orange);}
+    .transition-next{background:color-mix(in srgb,var(--orange) 8%,var(--paper));}.transition-arrow{color:var(--orange);font-family:'DM Mono',monospace;font-size:1rem;line-height:1;}
+    .transition-sdgs,.transition-goals{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}.transition-sdgs .sdg-logo,.transition-goals .sdg-logo{width:34px;flex:0 0 34px;}
     .strategy-matrix{display:grid;grid-template-columns:minmax(180px,1.3fr) repeat(4,minmax(90px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--pale);}
     .strategy-matrix>div{min-height:47px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:.35rem;}
     .strategy-matrix .matrix-heading{font-family:'DM Mono',monospace;font-size:.62rem;line-height:1.2;color:var(--muted);text-align:center;}
@@ -451,7 +490,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:330px;padding:1.4rem;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.signal-board{grid-template-columns:1fr;gap:1.75rem;margin-top:.2rem;}.signal-metric{min-height:112px;padding:.2rem 0 .65rem;}.signal-metric .giant-number{font-size:4.5rem;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.sdg-logo-grid{grid-template-columns:repeat(auto-fit,minmax(42px,1fr));gap:4px;}.mapping-sdgs .sdg-logo{width:34px;flex-basis:34px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:330px;padding:1.4rem;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.signal-board{grid-template-columns:1fr;gap:1.75rem;margin-top:.2rem;}.signal-metric{min-height:112px;padding:.2rem 0 .65rem;}.signal-metric .giant-number{font-size:4.5rem;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.sdg-logo-grid{grid-template-columns:repeat(auto-fit,minmax(42px,1fr));gap:4px;}.mapping-sdgs .sdg-logo{width:34px;flex-basis:34px;}.transition-head{display:none;}.transition-row{grid-template-columns:1fr 1fr;}.transition-cell{min-height:105px;padding:.65rem .55rem;gap:.25rem;}.transition-cell:nth-child(2){border-right:0;}.transition-cell:nth-child(-n+2){border-bottom:1px solid var(--line);}.transition-cell::before{content:attr(data-label);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;}.transition-cell strong{font-size:.84rem;}.transition-need strong{font-size:.68rem;}.transition-sdgs .sdg-logo,.transition-goals .sdg-logo{width:28px;flex-basis:28px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -603,7 +642,11 @@ for key, label in NEW_PROGRAMMES.items():
     st.markdown(f"<div class='mapping'><div class='mapping-name'>{label}</div><div class='mapping-demand'>{count}／{total}</div><div class='mapping-copy'><b>JCI 策略</b><br>{ALIGN[key][1]}</div><div class='mapping-sdgs'>{sdg_icons}</div></div>", unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
-st.markdown("<div class='figure-head'>FIG 05C · 各類別會員繳費記錄</div>", unsafe_allow_html=True)
+st.markdown("<div class='figure-head'>FIG 05C · 已有項目 → 下一步</div>", unsafe_allow_html=True)
+st.markdown(html_project_transition_comparison(filtered), unsafe_allow_html=True)
+
+st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
+st.markdown("<div class='figure-head'>FIG 05D · 各類別會員繳費記錄</div>", unsafe_allow_html=True)
 st.markdown(html_payment_grid(MEMBERSHIP), unsafe_allow_html=True)
 
 st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
