@@ -321,6 +321,12 @@ st.markdown(
     .giant-number{font-family:'Playfair Display','Songti TC','STSong',serif;color:var(--ink);font-size:clamp(5rem,11vw,11rem);line-height:.82;letter-spacing:-.035em;margin:.15rem 0 .5rem;}
     .rule{height:1px;background:var(--line);margin:1.65rem 0 1rem;}
     .section{padding:2.1rem 0 .6rem;}
+    .signal-board{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:clamp(1.5rem,3vw,3rem) clamp(1rem,2.8vw,3rem);margin:.35rem 0 .25rem;}
+    .signal-panel{min-width:0;display:flex;flex-direction:column;}
+    .signal-panel .figure-head{margin:0;flex:0 0 auto;}
+    .signal-panel .lollipop-chart,.signal-panel .scale-chart,.signal-panel .role-symbol-chart,.signal-panel .membership-pie-chart{flex:1;box-sizing:border-box;}
+    .signal-metric{min-height:146px;padding:.35rem 0 .8rem;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;}
+    .signal-metric .giant-number{font-size:clamp(4.75rem,8vw,8rem);margin:.2rem 0 0;}
     .chart-frame{background:var(--pale);border:1px solid var(--line);padding:.35rem .35rem 0;}
     .html-chart{background:var(--pale);border:1px solid var(--line);padding:.8rem 1rem .75rem;}
     .html-bar-row{display:grid;grid-template-columns:minmax(132px,1fr) minmax(120px,2.5fr) minmax(64px,.45fr);gap:.7rem;align-items:center;min-height:37px;border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent);}
@@ -411,7 +417,7 @@ st.markdown(
     .matrix-empty{background:var(--pale);}
     .footer-note{font-family:'DM Mono',monospace;color:var(--muted);font-size:.62rem;line-height:1.5;padding-top:.4rem;}
     .stDownloadButton button{border-radius:0;border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:'DM Mono',monospace;font-size:.7rem;}
-    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
+    @media(max-width:760px){[data-testid='stMainBlockContainer']{padding:1rem 1.05rem 3rem;}h1{font-size:3.5rem !important;}h2{font-size:2rem !important;}.hero-figure{min-height:255px;}.setup-meta{grid-template-columns:1fr 1fr;}.questionnaire-grid{grid-template-columns:1fr;}.decision-line{grid-template-columns:38px 1fr;}.mapping{grid-template-columns:1fr 1fr;gap:.4rem;}.image-figure,.image-figure img{min-height:295px;height:295px;}.visual-spread{grid-template-columns:1fr;}.visual-portrait{min-height:285px;}.visual-note{min-height:320px;padding:1.45rem;}.rail-nav{position:static;}.signal-board{grid-template-columns:1fr;gap:1.75rem;margin-top:.2rem;}.signal-metric{min-height:112px;padding:.2rem 0 .65rem;}.signal-metric .giant-number{font-size:4.5rem;}.html-chart,.lollipop-chart,.scale-chart,.role-symbol-chart{padding:.65rem .6rem;}.html-bar-row,.lollipop-row,.scale-row{grid-template-columns:92px minmax(85px,1fr) 55px;gap:.45rem;}.html-bar-label,.lollipop-label,.scale-label{font-size:.7rem;}.html-bar-value,.lollipop-value,.scale-value{font-size:.59rem;}.scale-dots{gap:.18rem;}.scale-dot{width:9px;height:9px;}.member-figure-row{grid-template-columns:96px minmax(100px,1fr) 28px;gap:.45rem;min-height:58px;}.member-figure-label{font-size:.78rem;}.member-figures{gap:4px 5px;}.member-figure{transform:scale(.88);transform-origin:left center;margin-right:-1px;}.member-figure-value{font-size:.62rem;}.payment-grid-chart{padding:.65rem .6rem;}.payment-grid-row{grid-template-columns:88px minmax(120px,1fr) 38px;gap:.45rem;min-height:70px;}.payment-grid-label{font-size:.76rem;}.payment-member-grid{grid-template-columns:repeat(9,9px);grid-auto-rows:9px;gap:3px;}.payment-cell{width:9px;height:9px;}.payment-grid-value{font-size:.6rem;}.payment-grid-key{gap:.7rem;font-size:.57rem;}.payment-grid-key .payment-cell{width:9px;height:9px;}.membership-pie-chart{min-height:150px;padding:.65rem;grid-template-columns:100px minmax(0,1fr);gap:.65rem;}.membership-pie-key{gap:.34rem;}.membership-pie-key-row{grid-template-columns:9px 1fr;gap:.3rem;font-size:.67rem;}.membership-pie-key-row strong{grid-column:2;font-size:.57rem;}.membership-pie-swatch{width:8px;height:8px;}.comment-cloud{min-height:0;padding:.9rem .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.28rem .38rem;}.cloud-word{position:static;font-size:calc(.66rem + (var(--cloud-weight) * .37rem));transform:none;}.cloud-word:hover{transform:scale(1.04);}.strategy-matrix{grid-template-columns:112px repeat(4,minmax(58px,1fr));overflow-x:auto;}.strategy-matrix>div{min-height:54px;padding:.25rem;}.strategy-matrix .matrix-heading,.matrix-cell{font-size:.55rem;}.strategy-matrix .matrix-label{font-size:.72rem;}}
     </style>
     """,
     unsafe_allow_html=True,
@@ -477,34 +483,30 @@ question_markup = "".join(
 st.markdown(f"<section class='questionnaire-grid'>{question_markup}</section>", unsafe_allow_html=True)
 
 st.markdown("<div id='signal'></div><div class='section'><div class='figure-label'>FIG 02 · 需求分布</div><h2>會員要的不是更多活動，<br>而是更有用的活動。</h2></div>", unsafe_allow_html=True)
-col_a, col_b = st.columns([1.08, .92], gap="large")
-with col_a:
-    focus_data = pd.DataFrame({"方向": FOCUS, "回覆": [count_choice(filtered, "development_focus", key) for key in FOCUS]}).sort_values("回覆")
-    st.markdown("<div class='figure-head'>FIG 02A · JCI 四大發展機會 / 首選</div>", unsafe_allow_html=True)
-    st.markdown(html_lollipop_chart(focus_data, "方向", "回覆"), unsafe_allow_html=True)
-with col_b:
-    st.markdown("<div class='figure-label'>正面滿意度</div><div class='giant-number'>72%</div>", unsafe_allow_html=True)
-    st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
-    sat_data = filtered["satisfaction"].value_counts().reindex(SATISFACTION).fillna(0).astype(int).rename_axis("滿意度").reset_index(name="回覆")
-    st.markdown("<div class='figure-head'>FIG 02B · 活動整體滿意度</div>", unsafe_allow_html=True)
-    st.markdown(html_dot_scale(sat_data, "滿意度", "回覆"), unsafe_allow_html=True)
-
-st.markdown("<div class='rule'></div>", unsafe_allow_html=True)
-signal_left, signal_right = st.columns([1.18, .82], gap="large")
-with signal_left:
-    st.markdown("<div class='figure-head'>FIG 02C · 已有共鳴的形式</div>", unsafe_allow_html=True)
-    existing = filtered[filtered["memorable_programmes"].notna()]
-    existing_data = pd.DataFrame({"活動": list(PROGRAMMES.values()), "提及": [count_choice(existing, "memorable_programmes", key) for key in PROGRAMMES]}).sort_values("提及", ascending=False)
-    existing_members = "".join(
-        f"<div class='member-figure-row'><span class='member-figure-label'>{escape(str(row['活動']))}</span>"
-        f"<span class='member-figures' aria-hidden='true'>{''.join('<i class="member-figure"></i>' for _ in range(int(row['提及'])))}</span>"
-        f"<strong class='member-figure-value'>{int(row['提及'])}</strong></div>"
-        for _, row in existing_data.iterrows()
-    )
-    st.markdown(f"<div class='role-symbol-chart' role='img' aria-label='以人形符號呈現提及既有活動的會員人數'>{existing_members}</div>", unsafe_allow_html=True)
-with signal_right:
-    st.markdown("<div class='figure-head'>FIG 02D · 會員類別結構</div>", unsafe_allow_html=True)
-    st.markdown(html_membership_pie(MEMBERSHIP), unsafe_allow_html=True)
+focus_data = pd.DataFrame({"方向": FOCUS, "回覆": [count_choice(filtered, "development_focus", key) for key in FOCUS]}).sort_values("回覆")
+sat_data = filtered["satisfaction"].value_counts().reindex(SATISFACTION).fillna(0).astype(int).rename_axis("滿意度").reset_index(name="回覆")
+existing = filtered[filtered["memorable_programmes"].notna()]
+existing_data = pd.DataFrame({"活動": list(PROGRAMMES.values()), "提及": [count_choice(existing, "memorable_programmes", key) for key in PROGRAMMES]}).sort_values("提及", ascending=False)
+existing_members = "".join(
+    f"<div class='member-figure-row'><span class='member-figure-label'>{escape(str(row['活動']))}</span>"
+    f"<span class='member-figures' aria-hidden='true'>{''.join('<i class="member-figure"></i>' for _ in range(int(row['提及'])))}</span>"
+    f"<strong class='member-figure-value'>{int(row['提及'])}</strong></div>"
+    for _, row in existing_data.iterrows()
+)
+signal_board = (
+    "<div class='signal-board'>"
+    "<section class='signal-panel'><div class='figure-head'>FIG 02A · JCI 四大發展機會 / 首選</div>"
+    f"{html_lollipop_chart(focus_data, '方向', '回覆')}</section>"
+    "<section class='signal-panel'><div class='signal-metric'><div><div class='figure-label'>正面滿意度</div>"
+    f"<div class='giant-number'>{positive_rate:.0%}</div></div></div>"
+    "<div class='figure-head'>FIG 02B · 活動整體滿意度</div>"
+    f"{html_dot_scale(sat_data, '滿意度', '回覆')}</section>"
+    "<section class='signal-panel'><div class='figure-head'>FIG 02C · 已有共鳴的形式</div>"
+    f"<div class='role-symbol-chart' role='img' aria-label='以人形符號呈現提及既有活動的會員人數'>{existing_members}</div></section>"
+    "<section class='signal-panel'><div class='figure-head'>FIG 02D · 會員類別結構</div>"
+    f"{html_membership_pie(MEMBERSHIP)}</section></div>"
+)
+st.markdown(signal_board, unsafe_allow_html=True)
 
 st.markdown("<div id='comments'></div><div class='section'><div class='figure-label'>FIG 02E · 開放意見</div><h2>會員想要的資源，<br>藏在他們的用字裡。</h2></div>", unsafe_allow_html=True)
 st.markdown("<div class='figure-head'>FIG 02E · 所需資源或活動形式 / 關鍵詞</div>", unsafe_allow_html=True)
